@@ -14,14 +14,16 @@ Este projeto segue a **Clean Architecture** e utiliza **ASP.NET Core** no backen
   - Regras de negócio e controle de permissões
   - CRUD de usuários
 
-**Estrutura sugerida:**
 
-backend/
-├── GrandPneu.Api/ # API REST
-├── GrandPneu.Application/ # Regras de negócio / services
-├── GrandPneu.Domain/ # Entidades e enums
-├── GrandPneu.Infrastructure/ # DB, EF Core, migrations
-└── backend.sln # Solution file
+**Endpoints principais:**
+
+| Método | Endpoint      | Acesso                  | Descrição                       |
+|--------|---------------|------------------------|---------------------------------|
+| POST   | /users/register | Público                | Cria novo usuário com role      |
+| POST   | /users/login    | Público                | Autentica usuário e retorna JWT |
+| GET    | /users          | Roles 1 e 2           | Lista todos os usuários         |
+| PUT    | /users          | Role 1                | Atualiza dados do usuário       |
+| GET    | /health         | Público                | Retorna status da API           |
 
 
 ## 🐳 Infraestrutura
@@ -45,7 +47,7 @@ backend/
 classDiagram
     User <|-- Admin
     User <|-- Gestor
-    User <|-- Cliente
+    User <|-- User
 
     class User {
         +Guid Id
@@ -57,6 +59,25 @@ classDiagram
 
     class Admin
     class Gestor
-    class Cliente
+    class User
 
     
+
+**Estrutura de pastas Mermaid:**
+```mermaid
+
+flowchart TB
+    A[GrandPneu.sln] --> B[GrandPneu.Api]
+    A --> C[GrandPneu.Application]
+    A --> D[GrandPneu.Domain]
+    A --> E[GrandPneu.Infrastructure]
+    A --> F[docs]
+
+    B --> B1[Controllers]
+    B --> B2[DTOs]
+    B --> B3[Helpers]
+
+    C --> C1[Services]
+
+    E --> E1[Data / DbContext / Migrations]
+
