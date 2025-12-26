@@ -21,3 +21,18 @@ public class UserRegisterDto
     [Range(1, 3, ErrorMessage = "Role deve ser 1 (Admin), 2 (Gestor) ou 3 (User)")]
     public int Role { get; set; }
 }
+
+
+public class UserResponseDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Role { get; set; } = null!;
+}
+
+
+public class UserUpdateDto
+{
+    public string Name { get; set; } = default!;
+}

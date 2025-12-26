@@ -23,7 +23,15 @@ public class UserService
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-        var user = new User(dto.Name, dto.Email, hashedPassword, UserRole.User);
+        var role = dto.Role switch
+        {
+            1 => UserRole.Admin,
+            2 => UserRole.Gestor,
+            3 => UserRole.User,
+            _ => UserRole.User
+        };
+
+        var user = new User(dto.Name, dto.Email, hashedPassword, role);
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -59,4 +67,32 @@ public class UserService
             Role = user.Role.ToString()
         };
     }
+
+    public async Task<UserResponseDto> UpdateAsync(Guid userId, UserUpdateDto dto, User actor)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
+            throw new KeyNotFoundException("Usuário não encontrado");
+
+        if (actor.Role != UserRole.Admin)
+            throw new UnauthorizedAccessException("Ação permitida apenas para administradores");
+
+        user.ChangeName(dto.Name);
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        return ToResponseDto(user);
+    }
+
+    public async Task<User> GetByEmailAsync(string email)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null)
+            throw new KeyNotFoundException("Usuário não encontrado");
+
+        return user;
+    }
+
+
 }

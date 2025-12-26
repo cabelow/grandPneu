@@ -4,23 +4,47 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GrandPneu.Api.Services;
+using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 
-// =======================
 // Load .env
-// =======================
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =======================
-// Services
-// =======================
-
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Insira o token JWT desta forma: 'Bearer {token}'"
+    });
 
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme 
+            {
+                Reference = new OpenApiReference 
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+builder.Services.AddControllers();
+builder.Services.AddScoped<UserService>();
 
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -45,18 +69,16 @@ builder.Services.AddAuthentication("Bearer")
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
-// **Adicione autorização**
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// =======================
-// Pipeline
-// =======================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -68,6 +90,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.Run();

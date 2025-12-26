@@ -62,4 +62,31 @@ public class UsersController : ControllerBase
         var users = await _userService.GetAllAsync();
         return Ok(users);
     }
+
+    [HttpPut("{id}")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserUpdateDto dto)
+    {
+        try
+        {
+            var actorEmail = User.Identity?.Name;
+            if (actorEmail == null) return Unauthorized();
+
+            var actor = await _userService.GetByEmailAsync(actorEmail);
+
+            var updatedUser = await _userService.UpdateAsync(id, dto, actor);
+            return Ok(updatedUser);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Forbid(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+
+
 }
