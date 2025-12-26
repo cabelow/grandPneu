@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: grandpneu_postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - grandpneu_network
+
+  api:
+    build:
+      context: ../backend
+      dockerfile: GrandPneu.Api/Dockerfile
+    container_name: grandpneu_api
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5000:8080"
+    networks:
+      - grandpneu_network
+
+volumes:
+  postgres_data:
+
+networks:
+  grandpneu_network:
+    driver: bridge
