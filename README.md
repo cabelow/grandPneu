@@ -62,22 +62,3 @@ classDiagram
     class User
 
     
-
-**Estrutura de pastas Mermaid:**
-```mermaid
-
-flowchart TB
-    A[GrandPneu.sln] --> B[GrandPneu.Api]
-    A --> C[GrandPneu.Application]
-    A --> D[GrandPneu.Domain]
-    A --> E[GrandPneu.Infrastructure]
-    A --> F[docs]
-
-    B --> B1[Controllers]
-    B --> B2[DTOs]
-    B --> B3[Helpers]
-
-    C --> C1[Services]
-
-    E --> E1[Data / DbContext / Migrations]
-
