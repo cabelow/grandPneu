@@ -15,7 +15,12 @@ export class Users {
     return this.http.get<User[]>(`${this.API_URL}/users`);
   }
 
-  update(user: User) {
-    return this.http.put(`${this.API_URL}/users`, user);
+  update(userId: string, dto: { name: string }) {
+    return this.http.put(`${this.API_URL}/users/${userId}`, dto);
   }
+
+  register(user: { name: string; email: string; role: number }) {
+    return this.http.post(`${this.API_URL}/users/register`, user);
+  }
+
 }

@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { UsersComponent } from './pages/users/users.component';
 import { roleGuard } from './core/guards/router.guard';
 import { authGuard, } from './core/guards/auth.guard';
+import { RegisterUserComponent } from './pages/register-user/register-user.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterUserComponent },
   {
     path: 'home',
     loadComponent: () =>

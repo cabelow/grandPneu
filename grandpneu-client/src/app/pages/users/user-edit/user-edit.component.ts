@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Users } from 'src/app/services/users';
 import { User } from 'src/app/core/models/user.model';
@@ -19,27 +19,43 @@ export class UserEditComponent {
 
   constructor(
     private modalCtrl: ModalController,
+    private toastCtrl: ToastController,
     private usersService: Users
   ) {}
 
-  save() {
-    if (!this.user.name || !this.user.email) return;
+  async save() {
+    if (!this.user.name){
+      await this.showToast('O nome não pode estar vazio', 'danger');
+      return;
+    } 
 
     this.loading = true;
 
-    this.usersService.update(this.user).subscribe({
-      next: () => {
+    const dto = { name: this.user.name };
+
+    this.usersService.update(this.user.id, dto).subscribe({
+      next: async () => {
         this.loading = false;
+        await this.showToast('Usuário atualizado com sucesso!');
         this.modalCtrl.dismiss({ updated: true });
       },
-      error: () => {
+      error: async () => {
         this.loading = false;
-        alert('Erro ao atualizar usuário');
+        await this.showToast('Erro ao atualizar usuário', 'danger');
       }
     });
   }
 
   close() {
     this.modalCtrl.dismiss();
+  }
+
+  private async showToast(message: string, color: 'success' | 'danger' = 'success') {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color
+    });
+    toast.present();
   }
 }

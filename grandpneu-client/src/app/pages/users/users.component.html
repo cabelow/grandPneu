@@ -9,7 +9,7 @@
         <th>Nome</th>
         <th>Email</th>
         <th>Role</th>
-        <th>Ações</th>
+        <th *ngIf="currentUserRole === 1">Ações</th>
       </tr>
     </thead>
 
@@ -20,9 +20,8 @@
         <td>
           {{ u.role }}
         </td>
-        <td>
+        <td *ngIf="currentUserRole === 1">
           <ion-button
-            *ngIf="currentUserRole === 'Admin'"
             size="small"
             (click)="editUser(u)"
             fill="outline"

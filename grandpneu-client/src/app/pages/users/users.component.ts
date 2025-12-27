@@ -59,12 +59,19 @@ export class UsersComponent implements OnInit {
     if (!token) return 0;
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
+      const roleClaim = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']?.toLowerCase();
       console.log('Decoded token payload:', payload);
-      return payload.role ?? 0;
+      switch (roleClaim) {
+        case 'admin': return 1;
+        case 'gestor': return 2;
+        case 'user': return 3;
+        default: return 0;
+      }
     } catch {
       return 0;
     }
   }
+
 
   ngOnInit() {
     console.log('UsersComponent initialized');

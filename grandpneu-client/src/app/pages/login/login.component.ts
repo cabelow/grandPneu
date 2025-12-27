@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [IonicModule, FormsModule],
+  imports: [IonicModule, FormsModule, RouterModule],
 })
 export class LoginComponent implements OnInit {
 
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private toastCtrl: ToastController,
     private router: Router,
-    private routerLink: Router
+    private routerLink: Router,
   ) {}
 
   ngOnInit() {}
