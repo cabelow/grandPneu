@@ -1,0 +1,32 @@
+classDiagram
+    class User {
+        +string id
+        +string name
+        +string email
+        +string role
+    }
+
+    class UsersService {
+        +getAll() User[]
+        +update(user: User)
+        +register(user: User)
+    }
+
+    class UsersComponent {
+        -users: User[]
+        -loading: boolean
+        -currentUserRole: number
+        +loadUsers()
+        +editUser(user: User)
+    }
+
+    class UserEditComponent {
+        -user: User
+        -loading: boolean
+        +save()
+        +close()
+    }
+
+    UsersComponent --> UsersService
+    UsersComponent --> UserEditComponent
+    UserEditComponent --> UsersService

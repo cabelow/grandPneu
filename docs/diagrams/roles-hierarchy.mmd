@@ -1,0 +1,18 @@
+classDiagram
+    class Admin {
+        <<role>>
+        +Acesso total
+    }
+
+    class Gestor {
+        <<role>>
+        +Gerencia usuários e dados limitados
+    }
+
+    class User {
+        <<role>>
+        +Acesso padrão
+    }
+
+    Admin <|-- Gestor
+    Gestor <|-- User

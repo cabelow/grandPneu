@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant Admin
+    participant UsersComponent
+    participant Modal
+    participant UsersService
+    participant Backend
+
+    Admin->>UsersComponent: Clica "Editar"
+    UsersComponent->>Modal: Abre UserEditComponent
+    Admin->>Modal: Altera nome do usuário
+    Modal->>UsersService: update(user)
+    UsersService->>Backend: PUT /users/{id}
+    Backend-->>UsersService: usuário atualizado
+    UsersService-->>Modal: success
+    Modal-->>UsersComponent: modal fechado, reload users
+    UsersComponent-->>Admin: lista atualizada

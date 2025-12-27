@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant AuthService
+    participant Backend
+
+    User->>Frontend: Digita email e senha
+    Frontend->>AuthService: login({email, password})
+    AuthService->>Backend: POST /users/login
+    Backend-->>AuthService: token JWT
+    AuthService-->>Frontend: token armazenado
+    Frontend-->>User: Login realizado com sucesso
