@@ -18,10 +18,15 @@ public class GrandPneuDbContextFactory : IDesignTimeDbContextFactory<AppDbContex
         var user = Env.GetString("DB_USER") ?? throw new InvalidOperationException("DB_USER não encontrado");
         var pass = Env.GetString("DB_PASS") ?? throw new InvalidOperationException("DB_PASS não encontrado");
 
-        var connectionString = $"Host={host};Port={port};Database={db};Username={user};Password={pass}";
+        // conectaão com o banco de dados para host externo (Docker local ou nuvem)
+        // var connectionString = $"Host={host};Port={port};Database={db};Username={user};Password={pass}";
+        // var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        // optionsBuilder.UseNpgsql(connectionString);
 
+        //conexão com o banco de dados SQLite
+        var dbPath = Env.GetString("SQLITE_PATH") ?? "grandpneu.db";
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
         return new AppDbContext(optionsBuilder.Options);
     }

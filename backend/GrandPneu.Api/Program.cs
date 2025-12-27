@@ -49,8 +49,8 @@ builder.Services.AddScoped<UserService>();
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = $"Host={Env.GetString("DB_HOST")};Port={Env.GetString("DB_PORT")};Database={Env.GetString("DB_NAME")};Username={Env.GetString("DB_USER")};Password={Env.GetString("DB_PASS")}";
-    options.UseNpgsql(connectionString);
+    var dbPath = Env.GetString("SQLITE_PATH") ?? "grandpneu.db";
+    options.UseSqlite($"Data Source={dbPath}");
 });
 
 // JWT
