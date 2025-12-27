@@ -1,0 +1,42 @@
+<div class="users-page">
+  <h1>Usuários</h1>
+
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <table *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>
+          {{ u.role }}
+        </td>
+        <td>
+          <ion-button
+            *ngIf="currentUserRole === 'Admin'"
+            size="small"
+            (click)="editUser(u)"
+            fill="outline"
+          >
+            Editar
+          </ion-button>
+        </td>
+      </tr>
+
+      <tr *ngIf="users.length === 0 && !loading">
+        <td colspan="4" class="empty">
+          Nenhum usuário carregado
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

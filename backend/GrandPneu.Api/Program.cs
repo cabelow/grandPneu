@@ -13,6 +13,18 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:8100")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -84,6 +96,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

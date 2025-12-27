@@ -1,0 +1,25 @@
+.users-page {
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #157e8e;
+  padding: 10px;
+}
+
+th {
+  background: #157e8e;
+  text-align: left;
+}
+
+.empty {
+  text-align: center;
+  color: #777;
+}

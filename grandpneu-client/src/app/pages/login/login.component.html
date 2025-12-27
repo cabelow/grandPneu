@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Bem-vindo</ion-card-title>
+      <ion-card-subtitle>Entre com suas credenciais</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- Email -->
+      <ion-item>
+        <ion-label position="stacked">E-mail</ion-label>
+        <ion-input
+          type="email"
+          placeholder="email@exemplo.com"
+          [(ngModel)]="email">
+        </ion-input>
+      </ion-item>
+
+      <!-- Senha -->
+      <ion-item>
+        <ion-label position="stacked">Senha</ion-label>
+        <ion-input
+          type="password"
+          placeholder="********"
+          [(ngModel)]="password">
+        </ion-input>
+      </ion-item>
+
+      <!-- Botão -->
+      <ion-button
+        expand="block"
+        class="ion-margin-top"
+        (click)="login()">
+        Entrar
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
